@@ -2,28 +2,46 @@
 
 from datetime import date
 
-class Student(object):
-    # student class variable
-    current_id = 0
-    
+
+class Person(object):
+    """
+    This is the super class
+    """
+
     def __init__(self, f_name, l_name):
-        super(Student, self).__init__()
-        self.id = self.generate_id()
         self.f_name = f_name
         self.l_name = l_name
-    # Make at least 5 students attend class
-    def attend_class(self, date, **kwargs):
-        # Default output data if dict is not specified
-        default_data = {teacher: 'Frank', location : 'Nairobi'}
 
-        if kwargs is not None:
-            if date == date.today():
-                new_dict = {}
-                # Student instance attended class in specified date (currently today)
-                return True
-            return False
-        return default_data
-    
+
+class Instructor(Person):
+    """
+    Inherits from Person class
+    """
+
+    def __init__(self, f_name, l_name, courses):
+        super().__init__(f_name, l_name)
+        self.courses = courses
+
+
+class Student(Person):
+    """
+    Inherits from person
+    """
+    # student class variable
+    current_id = 0
+
+    def __init__(self, f_name, l_name, courses):
+        super().__init__(f_name, l_name)
+        self.courses = courses
+        self.id = self.generate_id()
+
+    def attend_class(self, date, **kwargs):
+        """
+        Attend class function
+        """
+        if date == date.today():
+            Db.attendance_list[self.id] = [self.f_name, self.l_name]
+
     def generate_id(self):
         """
         Increment class variable with new method call for each instance
@@ -33,3 +51,9 @@ class Student(object):
         i_d = Student.current_id
         return i_d
 
+
+class Db():
+    """
+    storage class
+    """
+    attendance_list = {}
